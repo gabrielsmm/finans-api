@@ -1,6 +1,7 @@
 package com.gabrielsmm.financas.services;
 
 import com.gabrielsmm.financas.entities.Usuario;
+import com.gabrielsmm.financas.entities.enums.Perfil;
 import com.gabrielsmm.financas.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,7 @@ public class DbService {
 
     public void instanciaBaseDeDados() {
         Usuario usuario = new Usuario(null, "gabrielsmm", "gabriel@teste.com", bCryptPasswordEncoder.encode("12345"));
+        usuario.addPerfil(Perfil.ADMIN);
         usuarioRepository.save(usuario);
     }
 
