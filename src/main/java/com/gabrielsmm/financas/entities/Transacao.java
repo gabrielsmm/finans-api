@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +16,7 @@ public class Transacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Date data;
+    private LocalDate data;
     private Integer tipo;
     private Double valor;
 
@@ -30,7 +30,7 @@ public class Transacao {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    public Transacao(Integer id, Date data, TipoTransacao tipo, Double valor, Categoria categoria, String descricao, Usuario usuario) {
+    public Transacao(Integer id, LocalDate data, TipoTransacao tipo, Double valor, Categoria categoria, String descricao, Usuario usuario) {
         this.id = id;
         this.data = data;
         this.tipo = (tipo == null) ? null : tipo.getCodigo();

@@ -52,6 +52,7 @@ public class UsuarioService {
 
     public Usuario insert(UsuarioNewDTO objDto) {
         Usuario usuario = modelMapper.map(objDto, Usuario.class);
+        usuario.setId(null);
         usuario.setSenha(bCryptPasswordEncoder.encode(objDto.getSenha()));
         try {
             return usuarioRepository.save(usuario);
