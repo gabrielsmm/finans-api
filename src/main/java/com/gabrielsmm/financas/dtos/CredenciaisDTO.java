@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CredenciaisDTO {
 
-    private String nome;
+    private String email;
     private String senha;
 
 }

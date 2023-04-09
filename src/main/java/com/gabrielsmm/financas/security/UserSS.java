@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 public class UserSS implements UserDetails {
 
     private Integer id;
-    private String nome;
+    private String email;
     private String senha;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSS(Integer id, String nome, String senha, Set<Perfil> perfis) {
+    public UserSS(Integer id, String email, String senha, Set<Perfil> perfis) {
         this.id = id;
-        this.nome = nome;
+        this.email = email;
         this.senha = senha;
         this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toList());
     }
@@ -39,7 +39,7 @@ public class UserSS implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nome;
+        return email;
     }
 
     @Override
