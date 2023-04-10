@@ -3,7 +3,10 @@ package com.gabrielsmm.financas.services;
 import com.gabrielsmm.financas.dtos.UsuarioNewDTO;
 import com.gabrielsmm.financas.dtos.UsuarioUpdateDTO;
 import com.gabrielsmm.financas.entities.Usuario;
+import com.gabrielsmm.financas.entities.enums.Perfil;
 import com.gabrielsmm.financas.repositories.UsuarioRepository;
+import com.gabrielsmm.financas.security.UserSS;
+import com.gabrielsmm.financas.services.exceptions.AuthorizationException;
 import com.gabrielsmm.financas.services.exceptions.DataIntegrityException;
 import com.gabrielsmm.financas.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -27,9 +30,23 @@ public class UsuarioService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Usuario find(Integer id) {
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso negado");
+        }
         Optional<Usuario> obj = usuarioRepository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! " +
                 "Id: " + id + ", Tipo: " + Usuario.class.getName()));
+    }
+
+    public Usuario findLoggedUser() {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        Optional<Usuario> obj = usuarioRepository.findById(user.getId());
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! " +
+                "Id: " + user.getId() + ", Tipo: " + Usuario.class.getName()));
     }
 
     public Usuario findByEmail(String email) {
