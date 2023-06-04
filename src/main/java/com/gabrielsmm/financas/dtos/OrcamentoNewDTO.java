@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class OrcamentoNewDTO {
 
     @NotNull(message = "Informe o id do usuário")
-    @Positive(message = "O Id do aluno precisa ser positivo")
+    @Positive(message = "O Id do usuário precisa ser positivo")
     private Integer usuarioId;
 
     @NotBlank(message = "Preencha o campo nome corretamente")

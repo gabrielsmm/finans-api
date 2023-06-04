@@ -13,12 +13,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class OrcamentoUpdateDTO {
 
+    @NotBlank(message = "Preencha o campo nome corretamente")
     private String nome;
 
+    @NotNull(message = "Preencha o campo data de início corretamente")
     private LocalDate dataInicio;
 
+    @NotNull(message = "Preencha o campo data de fim corretamente")
     private LocalDate dataFim;
 
+    @NotNull(message = "Preencha o campo valor corretamente")
     private Double valor;
 
 }
