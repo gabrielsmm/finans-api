@@ -39,7 +39,8 @@ public class OrcamentoService {
 
     public Orcamento insert(OrcamentoNewDTO objDto) {
         Orcamento orcamento = modelMapper.map(objDto, Orcamento.class);
-        orcamento.setId(null);
+        orcamento.setId(-1);
+        validar(orcamento);
         try {
             return orcamentoRepository.save(orcamento);
         } catch (Exception e) {
@@ -50,6 +51,7 @@ public class OrcamentoService {
     public Orcamento update(Integer id, OrcamentoUpdateDTO objDto) {
         Orcamento orcamento = find(id);
         modelMapper.map(objDto, orcamento);
+        validar(orcamento);
         return orcamentoRepository.save(orcamento);
     }
 
@@ -70,6 +72,14 @@ public class OrcamentoService {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         Usuario usuario = usuarioService.find(user.getId());
         return orcamentoRepository.findByUsuario(usuario, pageRequest);
+    }
+
+    private void validar(Orcamento orcamento) {
+        if (orcamentoRepository.existeDataConflitante(
+                orcamento.getUsuario(), orcamento.getId(), orcamento.getDataInicio(), orcamento.getDataFim()
+        )) {
+            throw new DataIntegrityException("Já existe um orçamento que contempla o período informado.");
+        }
     }
 
 }

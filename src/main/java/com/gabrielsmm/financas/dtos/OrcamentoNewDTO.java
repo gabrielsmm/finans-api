@@ -28,6 +28,7 @@ public class OrcamentoNewDTO {
     private LocalDate dataFim;
 
     @NotNull(message = "Preencha o campo valor corretamente")
+    @Positive(message = "O valor deve ser maior que zero")
     private Double valor;
 
 

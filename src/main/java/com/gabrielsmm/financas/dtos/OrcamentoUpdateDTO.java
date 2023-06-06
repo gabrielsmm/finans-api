@@ -2,6 +2,7 @@ package com.gabrielsmm.financas.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class OrcamentoUpdateDTO {
     private LocalDate dataFim;
 
     @NotNull(message = "Preencha o campo valor corretamente")
+    @Positive(message = "O valor deve ser maior que zero")
     private Double valor;
 
 }
