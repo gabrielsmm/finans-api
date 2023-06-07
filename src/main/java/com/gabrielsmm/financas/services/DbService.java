@@ -27,7 +27,7 @@ public class DbService {
         Usuario usuario = new Usuario(null, "Gabriel Mendes", "gabriel@teste.com", bCryptPasswordEncoder.encode("12345"));
         usuario.addPerfil(Perfil.ADMIN);
 
-        Orcamento orcamento = new Orcamento(null, "Orçamento Abril", LocalDate.of(2023, 4, 1), LocalDate.of(2023, 4, 30), 2000.0, usuario);
+        Orcamento orcamento = new Orcamento(null, "Orçamento Abril", LocalDate.of(2023, 4, 1), LocalDate.of(2023, 4, 30), 2000.0, 2000.0, 0.0, usuario);
 
         usuario.getOrcamentos().add(orcamento);
 

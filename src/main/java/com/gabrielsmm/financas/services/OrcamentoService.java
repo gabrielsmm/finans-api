@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,15 @@ public class OrcamentoService {
         Optional<Orcamento> obj = orcamentoRepository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! " +
                 "Id: " + id + ", Tipo: " + Orcamento.class.getName()));
+    }
+
+    public Orcamento getOrcamentoVigente() {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        Usuario usuario = usuarioService.find(user.getId());
+        return orcamentoRepository.getOrcamentoVigente(usuario, LocalDate.now());
     }
 
     public Orcamento insert(OrcamentoNewDTO objDto) {
@@ -75,6 +85,10 @@ public class OrcamentoService {
     }
 
     private void validar(Orcamento orcamento) {
+        if (orcamento.getDataFim().isBefore(orcamento.getDataInicio())) {
+            throw new DataIntegrityException("Data final não pode ser anterior a data inicial.");
+        }
+
         if (orcamentoRepository.existeDataConflitante(
                 orcamento.getUsuario(), orcamento.getId(), orcamento.getDataInicio(), orcamento.getDataFim()
         )) {

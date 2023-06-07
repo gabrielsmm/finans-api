@@ -26,6 +26,12 @@ public class OrcamentoController {
         return ResponseEntity.ok().body(orcamento);
     }
 
+    @GetMapping(value = "/orcamento-vigente")
+    public ResponseEntity<Orcamento> getOrcamentoVigente() {
+        Orcamento orcamento = orcamentoService.getOrcamentoVigente();
+        return ResponseEntity.ok().body(orcamento);
+    }
+
     @PostMapping
     public ResponseEntity<Void> insert(@Valid @RequestBody OrcamentoNewDTO objDto) {
         Orcamento obj = orcamentoService.insert(objDto);

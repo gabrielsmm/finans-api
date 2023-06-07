@@ -22,6 +22,8 @@ public class Orcamento {
     private LocalDate dataInicio;
     private LocalDate dataFim;
     private Double valor;
+    private Double valorReceitas;
+    private Double valorDespesas;
 
     @JsonIgnore
     @ManyToOne

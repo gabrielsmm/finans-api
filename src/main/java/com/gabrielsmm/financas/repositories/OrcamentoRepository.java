@@ -22,4 +22,9 @@ public interface OrcamentoRepository extends JpaRepository<Orcamento, Integer> {
             "OR (o.dataFim >= :dataInicio AND o.dataFim <= :dataFim)")
     boolean existeDataConflitante(Usuario usuario, Integer id, LocalDate dataInicio, LocalDate dataFim);
 
+    @Query("SELECT o FROM Orcamento o " +
+           "WHERE o.usuario = :usuario " +
+           "AND :dataAtual BETWEEN o.dataInicio AND o.dataFim")
+    Orcamento getOrcamentoVigente(Usuario usuario, LocalDate dataAtual);
+
 }
