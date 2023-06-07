@@ -1,6 +1,6 @@
 package com.gabrielsmm.financas.entities;
 
-import com.gabrielsmm.financas.entities.enums.TipoCategoria;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +25,7 @@ public class Transacao {
 
     private String descricao;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;

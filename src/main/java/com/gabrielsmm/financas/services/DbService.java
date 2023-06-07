@@ -2,13 +2,15 @@ package com.gabrielsmm.financas.services;
 
 import com.gabrielsmm.financas.entities.Categoria;
 import com.gabrielsmm.financas.entities.Orcamento;
+import com.gabrielsmm.financas.entities.Transacao;
 import com.gabrielsmm.financas.entities.Usuario;
 import com.gabrielsmm.financas.entities.enums.Perfil;
 import com.gabrielsmm.financas.entities.enums.TipoCategoria;
 import com.gabrielsmm.financas.repositories.CategoriaRepository;
 import com.gabrielsmm.financas.repositories.OrcamentoRepository;
+import com.gabrielsmm.financas.repositories.TransacaoRepository;
 import com.gabrielsmm.financas.repositories.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,25 +19,24 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class DbService {
 
-    @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
     private OrcamentoRepository orcamentoRepository;
 
-    @Autowired
     private CategoriaRepository categoriaRepository;
 
-    @Autowired
+    private TransacaoRepository transacaoRepository;
+
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void instanciaBaseDeDados() {
         Usuario usuario = new Usuario(null, "Gabriel Mendes", "gabriel@teste.com", bCryptPasswordEncoder.encode("12345"));
         usuario.addPerfil(Perfil.ADMIN);
 
-        Orcamento orcamento = new Orcamento(null, "Orçamento Abril", LocalDate.of(2023, 4, 1), LocalDate.of(2023, 4, 30), 2000.0, 2000.0, 0.0, usuario);
+        Orcamento orcamento = new Orcamento(null, "Orçamento Abril", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 30), 2000.0, 0.0, 0.0, usuario);
 
         usuario.getOrcamentos().add(orcamento);
 
@@ -75,6 +76,10 @@ public class DbService {
         );
 
         categoriaRepository.saveAll(categorias);
+
+        Transacao transacao = new Transacao(null, LocalDate.now(), 90.0, categoria17, "Teste", usuario);
+
+        transacaoRepository.save(transacao);
     }
 
 }

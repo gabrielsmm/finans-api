@@ -3,8 +3,8 @@ package com.gabrielsmm.financas.config;
 import com.gabrielsmm.financas.security.JWTAuthenticationFilter;
 import com.gabrielsmm.financas.security.JWTAuthorizationFilter;
 import com.gabrielsmm.financas.security.JWTUtil;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,12 +26,11 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
     private JWTUtil jwtUtil;
 
     private static final String[] PUBLIC_MATCHERS_GET = {
@@ -80,7 +79,9 @@ public class SecurityConfig {
 
     @Bean
     ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        return modelMapper;
     }
 
 }
