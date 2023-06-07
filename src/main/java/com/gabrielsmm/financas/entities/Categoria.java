@@ -1,6 +1,7 @@
 package com.gabrielsmm.financas.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gabrielsmm.financas.entities.enums.TipoCategoria;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,15 +17,19 @@ import java.util.List;
 @Table(name = "categorias")
 public class Categoria {
 
-    // alimentação, transporte, moradia, lazer
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
+    private Integer tipo;
 
     @JsonIgnore
     @OneToMany(mappedBy = "categoria")
     private List<Transacao> transacoes = new ArrayList<>();
 
+    public Categoria(Integer id, String nome, TipoCategoria tipo) {
+        this.id = id;
+        this.nome = nome;
+        this.tipo = (tipo == null) ? null : tipo.getCodigo();
+    }
 }

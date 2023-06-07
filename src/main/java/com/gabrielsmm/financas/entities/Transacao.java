@@ -1,6 +1,6 @@
 package com.gabrielsmm.financas.entities;
 
-import com.gabrielsmm.financas.entities.enums.TipoTransacao;
+import com.gabrielsmm.financas.entities.enums.TipoCategoria;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,6 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private LocalDate data;
-    private Integer tipo;
     private Double valor;
 
     @ManyToOne
@@ -30,10 +29,9 @@ public class Transacao {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    public Transacao(Integer id, LocalDate data, TipoTransacao tipo, Double valor, Categoria categoria, String descricao, Usuario usuario) {
+    public Transacao(Integer id, LocalDate data, Double valor, Categoria categoria, String descricao, Usuario usuario) {
         this.id = id;
         this.data = data;
-        this.tipo = (tipo == null) ? null : tipo.getCodigo();
         this.valor = valor;
         this.categoria = categoria;
         this.descricao = descricao;

@@ -3,7 +3,7 @@ package com.gabrielsmm.financas.entities.enums;
 import lombok.Getter;
 
 @Getter
-public enum TipoTransacao {
+public enum TipoCategoria {
 
     RECEITA(1, "Receita"),
     DESPESA(2, "Despesa");
@@ -11,15 +11,15 @@ public enum TipoTransacao {
     private int codigo;
     private String descricao;
 
-    private TipoTransacao(int codigo, String descricao) {
+    private TipoCategoria(int codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }
 
-    public static TipoTransacao toEnum(Integer codigo) {
+    public static TipoCategoria toEnum(Integer codigo) {
         if (codigo == null) return null;
 
-        for (TipoTransacao x : TipoTransacao.values()) {
+        for (TipoCategoria x : TipoCategoria.values()) {
             if (codigo.equals(x.getCodigo())) {
                 return x;
             }
