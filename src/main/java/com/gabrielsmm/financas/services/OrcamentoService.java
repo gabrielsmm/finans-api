@@ -50,6 +50,8 @@ public class OrcamentoService {
     public Orcamento insert(OrcamentoNewDTO objDto) {
         Orcamento orcamento = modelMapper.map(objDto, Orcamento.class);
         orcamento.setId(-1);
+        orcamento.setValorReceitas(0d);
+        orcamento.setValorDespesas(0d);
         validar(orcamento);
         try {
             return orcamentoRepository.save(orcamento);

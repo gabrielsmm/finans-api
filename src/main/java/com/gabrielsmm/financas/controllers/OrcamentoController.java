@@ -52,7 +52,7 @@ public class OrcamentoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping(value = "/page")
     public ResponseEntity<Page<Orcamento>> findPage(
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
