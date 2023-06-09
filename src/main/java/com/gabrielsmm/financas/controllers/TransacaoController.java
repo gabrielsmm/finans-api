@@ -45,7 +45,7 @@ public class TransacaoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
+    @GetMapping(value = "/page")
     public ResponseEntity<Page<Transacao>> findPage(
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,

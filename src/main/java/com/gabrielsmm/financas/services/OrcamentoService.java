@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -73,6 +74,8 @@ public class OrcamentoService {
             orcamentoRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityException("Não foi possível excluir, erro de integridade de dados");
+        } catch (Exception e) {
+            throw new DataIntegrityException("Não foi possível excluir, existem transações no período");
         }
     }
 
