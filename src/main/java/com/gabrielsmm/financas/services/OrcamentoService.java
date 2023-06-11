@@ -73,8 +73,6 @@ public class OrcamentoService {
         try {
             orcamentoRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não foi possível excluir, erro de integridade de dados");
-        } catch (Exception e) {
             throw new DataIntegrityException("Não foi possível excluir, existem transações no período");
         }
     }

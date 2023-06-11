@@ -2,7 +2,6 @@ package com.gabrielsmm.financas.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "transacoes")
 public class Transacao {
@@ -36,4 +34,22 @@ public class Transacao {
     @ManyToOne
     @JoinColumn(name = "orcamento_id")
     private Orcamento orcamento;
+
+    @Transient
+    private Integer orcamentoId;
+
+    public Transacao(Integer id, LocalDate data, Double valor, Categoria categoria, String descricao, Usuario usuario, Orcamento orcamento) {
+        this.id = id;
+        this.data = data;
+        this.valor = valor;
+        this.categoria = categoria;
+        this.descricao = descricao;
+        this.usuario = usuario;
+        this.orcamento = orcamento;
+    }
+
+    @PostLoad
+    public void obterOrcamentoId() {
+        this.orcamentoId = this.orcamento.getId();
+    }
 }
