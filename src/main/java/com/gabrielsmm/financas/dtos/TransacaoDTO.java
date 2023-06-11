@@ -18,6 +18,10 @@ public class TransacaoDTO {
     @Positive(message = "O Id do usuário precisa ser positivo")
     private Integer usuarioId;
 
+    @NotNull(message = "Informe o id do orçamento")
+    @Positive(message = "O Id do orçamento precisa ser positivo")
+    private Integer orcamentoId;
+
     @NotNull(message = "Preencha o campo data corretamente")
     private LocalDate data;
 

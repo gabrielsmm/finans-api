@@ -36,11 +36,10 @@ public class DbService {
         Usuario usuario = new Usuario(null, "Gabriel Mendes", "gabriel@teste.com", bCryptPasswordEncoder.encode("12345"));
         usuario.addPerfil(Perfil.ADMIN);
 
-        Orcamento orcamento = new Orcamento(null, "Orçamento Abril", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 30), 2000.0, 0.0, 0.0, usuario);
-
-        usuario.getOrcamentos().add(orcamento);
-
         usuarioRepository.save(usuario);
+
+        Orcamento orcamento = new Orcamento(null, "Orçamento Junho", LocalDate.of(2023, 6, 1), LocalDate.of(2023, 6, 30), 2000.0, usuario);
+
         orcamentoRepository.save(orcamento);
 
         Categoria categoria1 = new Categoria(null, "Salário", TipoCategoria.RECEITA);
@@ -77,9 +76,10 @@ public class DbService {
 
         categoriaRepository.saveAll(categorias);
 
-        Transacao transacao = new Transacao(null, LocalDate.now(), 90.0, categoria17, "Teste", usuario);
+        Transacao transacao1 = new Transacao(null, LocalDate.now(), 90.0, categoria17, "Teste despesa", usuario, orcamento);
+        Transacao transacao2 = new Transacao(null, LocalDate.now(), 50.0, categoria2, "Teste receita", usuario, orcamento);
 
-        transacaoRepository.save(transacao);
+        transacaoRepository.saveAll(Arrays.asList(transacao1, transacao2));
     }
 
 }

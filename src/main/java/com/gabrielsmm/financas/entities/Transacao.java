@@ -2,6 +2,7 @@ package com.gabrielsmm.financas.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "transacoes")
 public class Transacao {
@@ -30,12 +32,8 @@ public class Transacao {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    public Transacao(Integer id, LocalDate data, Double valor, Categoria categoria, String descricao, Usuario usuario) {
-        this.id = id;
-        this.data = data;
-        this.valor = valor;
-        this.categoria = categoria;
-        this.descricao = descricao;
-        this.usuario = usuario;
-    }
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "orcamento_id")
+    private Orcamento orcamento;
 }
