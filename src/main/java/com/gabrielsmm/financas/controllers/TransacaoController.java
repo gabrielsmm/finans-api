@@ -50,9 +50,10 @@ public class TransacaoController {
             @RequestParam(value="page", defaultValue="0") Integer page,
             @RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,
             @RequestParam(value="orderBy", defaultValue="id") String orderBy,
-            @RequestParam(value="direction", defaultValue="DESC") String direction
+            @RequestParam(value="direction", defaultValue="DESC") String direction,
+            @RequestParam(value="tipo", defaultValue = "-1") Integer tipo
     ) {
-        Page<Transacao> list = transacaoService.findPage(page, linesPerPage, orderBy, direction);
+        Page<Transacao> list = transacaoService.findPage(page, linesPerPage, orderBy, direction, tipo);
         return ResponseEntity.ok().body(list);
     }
 

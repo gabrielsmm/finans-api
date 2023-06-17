@@ -59,14 +59,14 @@ public class TransacaoService {
         }
     }
 
-    public Page<Transacao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+    public Page<Transacao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, Integer tipo) {
         UserSS user = UserService.authenticated();
         if (user == null) {
             throw new AuthorizationException("Acesso negado");
         }
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         Usuario usuario = usuarioService.find(user.getId());
-        return transacaoRepository.findByUsuario(usuario, pageRequest);
+        return transacaoRepository.findByFilter(usuario, tipo, pageRequest);
     }
 
 }
