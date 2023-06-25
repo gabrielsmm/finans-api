@@ -5,6 +5,7 @@ import com.gabrielsmm.financas.security.JWTAuthorizationFilter;
 import com.gabrielsmm.financas.security.JWTUtil;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,8 +22,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Configuration
 @EnableWebSecurity
@@ -48,7 +47,7 @@ public class SecurityConfig {
                 .headers().frameOptions().sameOrigin().and()
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((req) -> req
-                        .requestMatchers(toH2Console()).permitAll()
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                         .requestMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                         .anyRequest().authenticated())
