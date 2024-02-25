@@ -1,16 +1,28 @@
 package com.gabrielsmm.financas.controllers;
 
-import com.gabrielsmm.financas.dtos.TransacaoDTO;
-import com.gabrielsmm.financas.entities.Transacao;
-import com.gabrielsmm.financas.services.TransacaoService;
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import java.net.URI;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import com.gabrielsmm.financas.dtos.TransacaoDTO;
+import com.gabrielsmm.financas.dtos.TransacoesPeriodoDTO;
+import com.gabrielsmm.financas.entities.Transacao;
+import com.gabrielsmm.financas.services.TransacaoService;
+
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/transacoes")
@@ -57,6 +69,13 @@ public class TransacaoController {
     ) {
         Page<Transacao> list = transacaoService.findPage(page, linesPerPage, orderBy, direction, tipo, mes, ano);
         return ResponseEntity.ok().body(list);
+    }
+    
+    @GetMapping(value = "/soma-valores-por-periodo")
+    public ResponseEntity<List<TransacoesPeriodoDTO>> getSomaValoresPorPeriodo(
+    		@RequestParam(value = "tipoPeriodo", defaultValue = "1") Integer tipoPeriodo) {
+    	List<TransacoesPeriodoDTO> resultado = transacaoService.getSomaValoresPorPeriodo(tipoPeriodo);
+    	return ResponseEntity.ok().body(resultado);
     }
 
 }

@@ -1,14 +1,9 @@
 package com.gabrielsmm.financas.services;
 
-import com.gabrielsmm.financas.dtos.TransacaoDTO;
-import com.gabrielsmm.financas.entities.Transacao;
-import com.gabrielsmm.financas.entities.Usuario;
-import com.gabrielsmm.financas.repositories.TransacaoRepository;
-import com.gabrielsmm.financas.security.UserSS;
-import com.gabrielsmm.financas.services.exceptions.AuthorizationException;
-import com.gabrielsmm.financas.services.exceptions.DataIntegrityException;
-import com.gabrielsmm.financas.services.exceptions.ObjectNotFoundException;
-import lombok.AllArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -16,7 +11,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.gabrielsmm.financas.dtos.TransacaoDTO;
+import com.gabrielsmm.financas.dtos.TransacoesPeriodoDTO;
+import com.gabrielsmm.financas.entities.Transacao;
+import com.gabrielsmm.financas.entities.Usuario;
+import com.gabrielsmm.financas.repositories.TransacaoRepository;
+import com.gabrielsmm.financas.security.UserSS;
+import com.gabrielsmm.financas.services.exceptions.AuthorizationException;
+import com.gabrielsmm.financas.services.exceptions.DataIntegrityException;
+import com.gabrielsmm.financas.services.exceptions.ObjectNotFoundException;
+
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -67,6 +72,21 @@ public class TransacaoService {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         Usuario usuario = usuarioService.find(user.getId());
         return transacaoRepository.findByFilter(usuario, tipo, mes, ano, pageRequest);
+    }
+    
+    public List<TransacoesPeriodoDTO> getSomaValoresPorPeriodo(Integer tipoPeriodo) {
+    	UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        Usuario usuario = usuarioService.find(user.getId());
+        
+    	List<TransacoesPeriodoDTO> resultado = new ArrayList<>();
+    	if (tipoPeriodo.equals(1)) {
+    		resultado = transacaoRepository.getSomaValoresMensais(usuario);
+    	}
+    	
+    	return resultado;
     }
 
 }
