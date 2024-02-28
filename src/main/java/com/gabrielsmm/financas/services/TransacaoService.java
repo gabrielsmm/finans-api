@@ -1,5 +1,6 @@
 package com.gabrielsmm.financas.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.gabrielsmm.financas.dtos.TransacaoDTO;
+import com.gabrielsmm.financas.dtos.TransacoesCategoriaDTO;
 import com.gabrielsmm.financas.dtos.TransacoesPeriodoDTO;
 import com.gabrielsmm.financas.entities.Transacao;
 import com.gabrielsmm.financas.entities.Usuario;
@@ -65,28 +67,35 @@ public class TransacaoService {
     }
 
     public Page<Transacao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction, Integer tipo, Integer mes, Integer ano) {
-        UserSS user = UserService.authenticated();
-        if (user == null) {
-            throw new AuthorizationException("Acesso negado");
-        }
+    	Usuario usuarioLogado = getUsuarioLogado();
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        Usuario usuario = usuarioService.find(user.getId());
-        return transacaoRepository.findByFilter(usuario, tipo, mes, ano, pageRequest);
+        return transacaoRepository.findByFilter(usuarioLogado, tipo, mes, ano, pageRequest);
     }
     
     public List<TransacoesPeriodoDTO> getSomaValoresPorPeriodo(Integer tipoPeriodo) {
-    	UserSS user = UserService.authenticated();
-        if (user == null) {
-            throw new AuthorizationException("Acesso negado");
-        }
-        Usuario usuario = usuarioService.find(user.getId());
+    	Usuario usuarioLogado = getUsuarioLogado();
         
     	List<TransacoesPeriodoDTO> resultado = new ArrayList<>();
     	if (tipoPeriodo.equals(1)) {
-    		resultado = transacaoRepository.getSomaValoresMensais(usuario);
+    		resultado = transacaoRepository.getSomaValoresPorPeriodo(usuarioLogado);
     	}
     	
     	return resultado;
     }
+    
+    public List<TransacoesCategoriaDTO> getSomaValoresPorCategoria(Integer tipoCategoria) {
+    	Usuario usuarioLogado = getUsuarioLogado();
+        Integer mes = LocalDate.now().getMonthValue();
+        Integer ano = LocalDate.now().getYear();
+        return transacaoRepository.getSomaValoresPorCategoria(usuarioLogado, tipoCategoria, mes, ano);
+    }
+
+	private Usuario getUsuarioLogado() {
+		UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        return usuarioService.find(user.getId());
+	}
 
 }

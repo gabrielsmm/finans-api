@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gabrielsmm.financas.dtos.TransacaoDTO;
+import com.gabrielsmm.financas.dtos.TransacoesCategoriaDTO;
 import com.gabrielsmm.financas.dtos.TransacoesPeriodoDTO;
 import com.gabrielsmm.financas.entities.Transacao;
 import com.gabrielsmm.financas.services.TransacaoService;
@@ -75,6 +76,13 @@ public class TransacaoController {
     public ResponseEntity<List<TransacoesPeriodoDTO>> getSomaValoresPorPeriodo(
     		@RequestParam(value = "tipoPeriodo", defaultValue = "1") Integer tipoPeriodo) {
     	List<TransacoesPeriodoDTO> resultado = transacaoService.getSomaValoresPorPeriodo(tipoPeriodo);
+    	return ResponseEntity.ok().body(resultado);
+    }
+    
+    @GetMapping(value = "/soma-valores-por-categoria")
+    public ResponseEntity<List<TransacoesCategoriaDTO>> getSomaValoresPorCategoria(
+    		@RequestParam(value = "tipoCategoria", defaultValue = "-1") Integer tipoCategoria) {
+    	List<TransacoesCategoriaDTO> resultado = transacaoService.getSomaValoresPorCategoria(tipoCategoria);
     	return ResponseEntity.ok().body(resultado);
     }
 
